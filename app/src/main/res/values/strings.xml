@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Math Test</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="skip">SKIP</string>
+    <string name="score_dialog">
+        Trò chơi kết thúc! \n
+        Bạn đạt tổng cộng: %d điểm
+    </string>
+    <string name="exit">Exit</string>
+    <string name="restart">Restart</string>
+    <string name="current_score_text">Điểm hiện tại: %d</string>
+    <string name="current_answered_question_text">Câu hỏi thứ %d / 10</string>
+</resources>
