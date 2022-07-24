@@ -4,8 +4,10 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/sonth/Desktop/android_things/SmartTest/app/src/main/res/drawable/rounded_corner.xml" value="0.1" />
+        <entry key="..\:/Users/sonth/Desktop/android_things/SmartTest/app/src/main/res/layout-land/fragment_game.xml" value="0.4" />
+        <entry key="..\:/Users/sonth/Desktop/android_things/SmartTest/app/src/main/res/layout-land/fragment_game_landscape.xml" value="0.264" />
         <entry key="..\:/Users/sonth/Desktop/android_things/SmartTest/app/src/main/res/layout/activity_main.xml" value="0.1" />
-        <entry key="..\:/Users/sonth/Desktop/android_things/SmartTest/app/src/main/res/layout/fragment_game.xml" value="0.2" />
+        <entry key="..\:/Users/sonth/Desktop/android_things/SmartTest/app/src/main/res/layout/fragment_game.xml" value="0.264" />
       </map>
     </option>
   </component>
