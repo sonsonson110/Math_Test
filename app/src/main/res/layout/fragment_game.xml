@@ -135,7 +135,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/current_score"
-            tools:text="5s" />
+            tools:text="5s"
+            android:text="@{@string/current_time_remain(GameViewModel.remainTime)}"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

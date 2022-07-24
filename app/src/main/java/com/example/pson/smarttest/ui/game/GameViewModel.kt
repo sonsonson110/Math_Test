@@ -1,5 +1,6 @@
 package com.example.pson.smarttest.ui.game
 
+import android.os.CountDownTimer
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -35,15 +36,23 @@ class GameViewModel : ViewModel() {
     private val _buttonD = MutableLiveData<Int>()
     val buttonD: LiveData<Int> get() = _buttonD
 
+    //khởi tạo instant bộ đếm
+    private var timer: CountDownTimer? = null
+
+    private val _remainTime = MutableLiveData<Long>()
+    val remainTime: LiveData<Long> get() = _remainTime
+
+    init {
+        timer = Timer()
+        reinitializeGame()
+    }
+
     //khởi tạo lại trò chơi
     fun reinitializeGame() {
         _score.value = 0
         _noQuestAnswered.value = 0
         getNextQuestion()
-    }
-
-    init {
-        reinitializeGame()
+        timer!!.start()
     }
 
     //tạo 1 câu hỏi ngẫu nhiên
@@ -98,11 +107,29 @@ class GameViewModel : ViewModel() {
     }
 
     //khởi tạo câu hỏi và các đáp án tiếp theo
+    //đồng thời tạo bộ đếm
     fun getNextQuestion() {
         getRandomQuestion()
         getRandomSelections()
         //tăng số câu hỏi đã trả lời
         _noQuestAnswered.value = (_noQuestAnswered.value)?.inc()
-
+        timer!!.start()
     }
+
+    //Bộ đếm thời gian (tổng 5s, giảm 1s)
+
+    inner class Timer: CountDownTimer(6000, 1000) {
+        override fun onTick(p0: Long) {
+            _remainTime.value =  p0/1000
+        }
+
+        override fun onFinish() {
+            _remainTime.value = 0 //reset
+            if (nextWord())
+                getNextQuestion()
+        }
+    }
+
+    //đóng băng thời gian
+    fun freeTime() = timer!!.cancel()
 }

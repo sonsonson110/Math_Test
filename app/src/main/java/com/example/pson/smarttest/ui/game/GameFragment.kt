@@ -1,7 +1,6 @@
 package com.example.pson.smarttest.ui.game
 
 import android.os.Bundle
-import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +16,7 @@ open class GameFragment : Fragment() {
     //viewModel
     private val viewModel: GameViewModel by viewModels()
 
-    internal lateinit var binding: FragmentGameBinding
+    private lateinit var binding: FragmentGameBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,7 +37,6 @@ open class GameFragment : Fragment() {
             gameFragment = this@GameFragment
             lifecycleOwner = viewLifecycleOwner
         }
-        timer.start()
     }
 
     // function của Layout
@@ -50,23 +48,19 @@ open class GameFragment : Fragment() {
             3 -> binding.answerC.text.toString()
             else -> binding.answerD.text.toString()
         }
-        //chuyển câu hỏi / hiện thông báo kết thúc
+        //cập nhật điểm -> chuyển câu hỏi / hiện thông báo kết thúc
         if (viewModel.isUserAnswerCorrect(userAnswer))
             viewModel.increaseScore()
 
-        nextAction()
-    }
-
-    internal fun nextAction() {
         if (!viewModel.nextWord()) {
             showResultDialog()
-            timer.cancel()
+            viewModel.freeTime()
         } else {
             viewModel.getNextQuestion()
-            timer.start()
         }
     }
 
+    //thiết lập thông báo kết thúc
     private fun showResultDialog() {
         MaterialAlertDialogBuilder(requireContext())
             .setMessage(getString(R.string.score_dialog, viewModel.score.value))
@@ -87,18 +81,4 @@ open class GameFragment : Fragment() {
     private fun exitGame() {
         activity?.finish()
     }
-
-    //Bộ đếm thời gian (tổng 5s, giảm 1s)
-    inner class Timer: CountDownTimer(5000, 1000) {
-
-        override fun onTick(p0: Long) {
-            binding.timerTextview.text = "Thời gian còn lại: ${p0/1000}s"
-        }
-
-        override fun onFinish() {
-            nextAction()
-        }
-    }
-    //new Instant
-    val timer = Timer()
 }
