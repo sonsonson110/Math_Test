@@ -12,4 +12,6 @@
     <string name="current_score_text">Điểm hiện tại: %d</string>
     <string name="current_answered_question_text">Câu hỏi thứ %d / 10</string>
     <string name="current_time_remain">Thời gian còn lại: %d</string>
+    <string name="math_test">Math Test</string>
+    <string name="start">START</string>
 </resources>
