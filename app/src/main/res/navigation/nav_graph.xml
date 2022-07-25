@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_start_fragment_to_game_fragment"
             app:destination="@id/game_fragment" />
+        <action
+            android:id="@+id/action_start_fragment_to_score_board"
+            app:destination="@id/score_Board" />
     </fragment>
 
     <fragment
@@ -20,4 +23,9 @@
         android:name="com.example.pson.smarttest.ui.game.GameFragment"
         android:label="fragment_game"
         tools:layout="@layout/fragment_game"/>
+    <fragment
+        android:id="@+id/score_Board"
+        android:name="com.example.pson.smarttest.ScoreBoard"
+        android:label="fragment_score_board"
+        tools:layout="@layout/fragment_score_board" />
 </navigation>

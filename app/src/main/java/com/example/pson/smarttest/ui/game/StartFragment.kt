@@ -32,8 +32,13 @@ class StartFragment : Fragment() {
         }
     }
 
-    //on click
+    //on click start button
     fun startGame() {
         findNavController().navigate(R.id.action_start_fragment_to_game_fragment)
+    }
+
+    //on click pika pic
+    fun openLeaderboard() {
+        findNavController().navigate(R.id.action_start_fragment_to_score_board)
     }
 }

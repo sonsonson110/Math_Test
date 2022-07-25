@@ -14,4 +14,6 @@
     <string name="current_time_remain">Thời gian còn lại: %d</string>
     <string name="math_test">Math Test</string>
     <string name="start">START</string>
+    <string name="feature_message">Some thing should be added here soon</string>
+    <string name="challenger_board">Challenger Board</string>
 </resources>
