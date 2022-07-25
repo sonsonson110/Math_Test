@@ -117,7 +117,6 @@ class GameViewModel : ViewModel() {
     }
 
     //Bộ đếm thời gian (tổng 5s, giảm 1s)
-
     inner class Timer: CountDownTimer(6000, 1000) {
         override fun onTick(p0: Long) {
             _remainTime.value =  p0/1000
@@ -131,5 +130,5 @@ class GameViewModel : ViewModel() {
     }
 
     //đóng băng thời gian
-    fun freeTime() = timer!!.cancel()
+    fun freezeTime() = timer!!.cancel()
 }

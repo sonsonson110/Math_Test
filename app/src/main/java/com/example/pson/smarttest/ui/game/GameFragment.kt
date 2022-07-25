@@ -37,6 +37,12 @@ open class GameFragment : Fragment() {
             gameFragment = this@GameFragment
             lifecycleOwner = viewLifecycleOwner
         }
+
+        //liên tục theo dõi thời gian còn lại và cập nhất theo tính huống
+        viewModel.remainTime.observe(viewLifecycleOwner) { remainTime ->
+            if (remainTime == 0L)
+                nextAction()
+        }
     }
 
     // function của Layout
@@ -52,9 +58,14 @@ open class GameFragment : Fragment() {
         if (viewModel.isUserAnswerCorrect(userAnswer))
             viewModel.increaseScore()
 
+        nextAction()
+    }
+
+    // tiếp / hiện thông báo kết thúc
+    private fun nextAction() {
         if (!viewModel.nextWord()) {
             showResultDialog()
-            viewModel.freeTime()
+            viewModel.freezeTime()
         } else {
             viewModel.getNextQuestion()
         }
