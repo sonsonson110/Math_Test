@@ -5,12 +5,25 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import com.example.pson.smarttest.R
 import com.example.pson.smarttest.databinding.FragmentStartBinding
 
 class StartFragment : Fragment() {
+
+    //setting ẩn thanh action bar riêng cho fragment
+    override fun onResume() {
+        super.onResume()
+        (activity as AppCompatActivity).supportActionBar?.setShowHideAnimationEnabled(false)
+        (activity as AppCompatActivity).supportActionBar?.hide()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        (activity as AppCompatActivity).supportActionBar?.show()
+    }
 
     //đổi data binding layout first
     private lateinit var binding: FragmentStartBinding
