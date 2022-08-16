@@ -2,6 +2,7 @@ package com.example.pson.smarttest.ui.game
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.text.InputFilter
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -22,6 +23,8 @@ class StartFragment : Fragment() {
                 .ScoreboardDao()
         )
     }
+
+    private var filteredPlayerName: String? = null
 
     //setting ẩn thanh action bar riêng cho fragment
     @SuppressLint("RestrictedApi")
@@ -54,20 +57,43 @@ class StartFragment : Fragment() {
         binding.apply {
             startFragment = this@StartFragment
         }
+        //set max length name in editText
+        binding.playerNameText.filters += InputFilter.LengthFilter(9)
     }
 
     //on click start button
     fun startGame() {
-        var playerName = binding.playerNameText.text.toString()
-        if (playerName == "") playerName = "Noname"
-        val action = StartFragmentDirections.actionStartFragmentToGameFragment(playerName = playerName)
-        findNavController().navigate(action)
-        viewModel.reinitializeGame()
+        if (isNameFieldTyped()) {
+            val action = StartFragmentDirections.actionStartFragmentToGameFragment(playerName = filteredPlayerName)
+            findNavController().navigate(action)
+            viewModel.reinitializeGame()
+        } else {
+            binding.playerNameText.error = "Please don't leave me blank :("
+        }
     }
 
     //on click pika pic
     fun openLeaderboard() {
         val action = StartFragmentDirections.actionStartFragmentToScoreboardFragment()
         findNavController().navigate(action)
+    }
+
+    //func that check if text field is empty or full of space digit
+    private fun isNameFieldTyped() : Boolean {
+        if (binding.playerNameText.text!!.isBlank())
+            return false
+
+        val playerName = binding.playerNameText.text!!.toString()
+
+        //xoá hết kí tự space ở đầu và cuối
+        var start = 0
+        var end = playerName.length - 1
+        while (playerName[start] == ' ') start++
+        while (playerName[end] == ' ') end--
+
+        //chuỗi kết quả
+        filteredPlayerName = playerName.substring(start, end+1)
+
+        return filteredPlayerName!!.isNotBlank()
     }
 }

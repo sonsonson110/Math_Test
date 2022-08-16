@@ -15,7 +15,8 @@
             app:destination="@id/game_fragment">
             <argument
                 android:name="playerName"
-                app:argType="string"/>
+                app:argType="string"
+                app:nullable="true"/>
         </action>
         <action
             android:id="@+id/action_start_fragment_to_scoreboardFragment"

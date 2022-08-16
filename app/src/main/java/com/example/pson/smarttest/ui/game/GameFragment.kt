@@ -8,7 +8,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.example.pson.smarttest.R
 import com.example.pson.smarttest.application.ScoreboardApplication
 import com.example.pson.smarttest.database.ScoreboardItem
@@ -85,7 +84,7 @@ open class GameFragment : Fragment() {
 
             //insert player result to database
             val playerScore = viewModel.score.value.toString()
-            val playerTime = SimpleDateFormat("HH:mm dd/MM/yyyy").format(Date())
+            val playerTime = SimpleDateFormat("HH:mm, dd/MM/yyyy").format(Date())
             arguments.let {
                 playerName = it?.getString("playerName").toString()
             }
