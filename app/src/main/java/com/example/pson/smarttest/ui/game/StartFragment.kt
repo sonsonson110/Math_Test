@@ -1,5 +1,6 @@
 package com.example.pson.smarttest.ui.game
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -7,13 +8,23 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.pson.smarttest.R
+import com.example.pson.smarttest.application.ScoreboardApplication
 import com.example.pson.smarttest.databinding.FragmentStartBinding
 
 class StartFragment : Fragment() {
 
+    private val viewModel: GameViewModel by activityViewModels {
+        GameViewModelFactory(
+            (activity?.application as ScoreboardApplication).database
+                .ScoreboardDao()
+        )
+    }
+
     //setting ẩn thanh action bar riêng cho fragment
+    @SuppressLint("RestrictedApi")
     override fun onResume() {
         super.onResume()
         (activity as AppCompatActivity).supportActionBar?.setShowHideAnimationEnabled(false)
@@ -47,11 +58,16 @@ class StartFragment : Fragment() {
 
     //on click start button
     fun startGame() {
-        findNavController().navigate(R.id.action_start_fragment_to_game_fragment)
+        var playerName = binding.playerNameText.text.toString()
+        if (playerName == "") playerName = "Noname"
+        val action = StartFragmentDirections.actionStartFragmentToGameFragment(playerName = playerName)
+        findNavController().navigate(action)
+        viewModel.reinitializeGame()
     }
 
     //on click pika pic
     fun openLeaderboard() {
-        findNavController().navigate(R.id.action_start_fragment_to_score_board)
+        val action = StartFragmentDirections.actionStartFragmentToScoreboardFragment()
+        findNavController().navigate(action)
     }
 }

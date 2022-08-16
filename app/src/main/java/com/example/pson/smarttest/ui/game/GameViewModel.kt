@@ -1,15 +1,17 @@
 package com.example.pson.smarttest.ui.game
 
 import android.os.CountDownTimer
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
+import com.example.pson.smarttest.database.ScoreboardDao
+import com.example.pson.smarttest.database.ScoreboardItem
+import kotlinx.coroutines.launch
 
-class GameViewModel : ViewModel() {
+class GameViewModel(private val scoreboardDao: ScoreboardDao) : ViewModel() {
 
     //Điểm đã đạt được
     private val _score = MutableLiveData<Int>()
     val score: LiveData<Int> get() = _score
+
     //Số câu đã trả lời
     private val _noQuestAnswered = MutableLiveData<Int>()
     val noQuestAnswered: LiveData<Int> get() = _noQuestAnswered
@@ -17,42 +19,35 @@ class GameViewModel : ViewModel() {
     //Câu hỏi hiện tại
     private val _currentQuestion = MutableLiveData<String>()
     val currentQuestion: LiveData<String> get() = _currentQuestion
+
     //2 biến cho câu hỏi hiện tại
     private var operant1: Int? = null
     private var operant2: Int? = null
+
     //kết quả của câu hỏi hiện tại
     private var result: Int? = null
 
     //Các câu trả lời hiện tại
     private val _buttonA = MutableLiveData<Int>()
     val buttonA: LiveData<Int> get() = _buttonA
-
     private val _buttonB = MutableLiveData<Int>()
     val buttonB: LiveData<Int> get() = _buttonB
-
     private val _buttonC = MutableLiveData<Int>()
     val buttonC: LiveData<Int> get() = _buttonC
-
     private val _buttonD = MutableLiveData<Int>()
     val buttonD: LiveData<Int> get() = _buttonD
 
     //khởi tạo instant bộ đếm
-    private var timer: CountDownTimer? = null
-
+    private var timer: CountDownTimer = Timer()
     private val _remainTime = MutableLiveData<Long>()
     val remainTime: LiveData<Long> get() = _remainTime
-
-    init {
-        timer = Timer()
-        reinitializeGame()
-    }
 
     //khởi tạo lại trò chơi
     fun reinitializeGame() {
         _score.value = 0
         _noQuestAnswered.value = 0
         getNextQuestion()
-        timer!!.start()
+        timer.start()
     }
 
     //tạo 1 câu hỏi ngẫu nhiên
@@ -97,12 +92,12 @@ class GameViewModel : ViewModel() {
     }
 
     //kiểm tra nếu đã trả lời 10 / 10 câu
-    fun nextWord() : Boolean {
+    fun nextWord(): Boolean {
         return _noQuestAnswered.value!! < MAX_NUMBER_OF_QUESTION
     }
 
     //kiểm tra liệu câu trả lời có đúng
-    fun isUserAnswerCorrect(userAnswer: String) : Boolean {
+    fun isUserAnswerCorrect(userAnswer: String): Boolean {
         return userAnswer == result.toString()
     }
 
@@ -113,13 +108,13 @@ class GameViewModel : ViewModel() {
         getRandomSelections()
         //tăng số câu hỏi đã trả lời
         _noQuestAnswered.value = (_noQuestAnswered.value)?.inc()
-        timer!!.start()
+        timer.start()
     }
 
     //Bộ đếm thời gian (tổng 5s, giảm 1s)
-    inner class Timer: CountDownTimer(6000, 1000) {
+    inner class Timer : CountDownTimer(6000, 1000) {
         override fun onTick(p0: Long) {
-            _remainTime.value =  p0/1000
+            _remainTime.value = p0 / 1000
         }
 
         override fun onFinish() {
@@ -130,5 +125,48 @@ class GameViewModel : ViewModel() {
     }
 
     //đóng băng thời gian
-    fun freezeTime() = timer!!.cancel()
+    fun freezeTime() = timer.cancel()
+
+
+    //Database method section
+
+    val topResults : LiveData<List<ScoreboardItem>> = scoreboardDao.getTopResults().asLiveData()
+
+    private fun insertItem(scoreboardItem: ScoreboardItem) {
+        viewModelScope.launch {
+            scoreboardDao.insert(scoreboardItem)
+        }
+    }
+
+    private fun getNewScoreboardItemEntry(
+        playerName: String,
+        playerScore: String,
+        playerTime: String
+    ): ScoreboardItem {
+        return ScoreboardItem(
+            name = playerName,
+            score = playerScore,
+            time = playerTime
+        )
+    }
+
+    fun addNewScoreboardItem(
+        playerName: String,
+        playerScore: String,
+        playerTime: String
+    ) {
+        val newItem = getNewScoreboardItemEntry(playerName, playerScore, playerTime)
+        insertItem(newItem)
+    }
+}
+
+class GameViewModelFactory(private val scoreboardDao: ScoreboardDao) : ViewModelProvider.Factory {
+
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(GameViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return GameViewModel(scoreboardDao) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
+    }
 }

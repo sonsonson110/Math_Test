@@ -6,17 +6,32 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.example.pson.smarttest.R
+import com.example.pson.smarttest.application.ScoreboardApplication
+import com.example.pson.smarttest.database.ScoreboardItem
 import com.example.pson.smarttest.databinding.FragmentGameBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import java.text.SimpleDateFormat
+import java.util.*
 
 open class GameFragment : Fragment() {
 
     //viewModel
-    private val viewModel: GameViewModel by viewModels()
+    private val viewModel: GameViewModel by activityViewModels {
+        GameViewModelFactory(
+            (activity?.application as ScoreboardApplication).database
+                .ScoreboardDao()
+        )
+    }
 
     private lateinit var binding: FragmentGameBinding
+
+    private lateinit var playerName: String
+
+    lateinit var scoreboardItem: ScoreboardItem
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -64,8 +79,17 @@ open class GameFragment : Fragment() {
     // tiếp / hiện thông báo kết thúc
     private fun nextAction() {
         if (!viewModel.nextWord()) {
+            //show result dialog
             showResultDialog()
             viewModel.freezeTime()
+
+            //insert player result to database
+            val playerScore = viewModel.score.value.toString()
+            val playerTime = SimpleDateFormat("HH:mm dd/MM/yyyy").format(Date())
+            arguments.let {
+                playerName = it?.getString("playerName").toString()
+            }
+            viewModel.addNewScoreboardItem(playerName, playerScore, playerTime)
         } else {
             viewModel.getNextQuestion()
         }
@@ -86,7 +110,8 @@ open class GameFragment : Fragment() {
     }
 
     private fun restartGame() {
-        viewModel.reinitializeGame()
+        val action = GameFragmentDirections.actionGameFragmentToStartFragment()
+        findNavController().navigate(action)
     }
 
     private fun exitGame() {

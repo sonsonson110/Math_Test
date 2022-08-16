@@ -12,20 +12,28 @@
         tools:layout="@layout/fragment_start" >
         <action
             android:id="@+id/action_start_fragment_to_game_fragment"
-            app:destination="@id/game_fragment" />
+            app:destination="@id/game_fragment">
+            <argument
+                android:name="playerName"
+                app:argType="string"/>
+        </action>
         <action
-            android:id="@+id/action_start_fragment_to_score_board"
-            app:destination="@id/score_Board" />
+            android:id="@+id/action_start_fragment_to_scoreboardFragment"
+            app:destination="@id/scoreboard_fragment" />
     </fragment>
 
     <fragment
         android:id="@+id/game_fragment"
         android:name="com.example.pson.smarttest.ui.game.GameFragment"
         android:label="fragment_game"
-        tools:layout="@layout/fragment_game"/>
+        tools:layout="@layout/fragment_game">
+        <action
+            android:id="@+id/action_game_fragment_to_start_fragment"
+            app:destination="@id/start_fragment" />
+    </fragment>
     <fragment
-        android:id="@+id/score_Board"
-        android:name="com.example.pson.smarttest.ScoreBoard"
-        android:label="fragment_score_board"
-        tools:layout="@layout/fragment_score_board" />
+        android:id="@+id/scoreboard_fragment"
+        android:name="com.example.pson.smarttest.ui.game.ScoreboardFragment"
+        android:label="fragment_scoreboard"
+        tools:layout="@layout/fragment_scoreboard" />
 </navigation>
