@@ -47,5 +47,11 @@ class ScoreboardFragment : Fragment() {
                 adapter.submitList(it)
             }
         }
+        //set first empty init scoreboard
+        if (viewModel.noResult()) {
+            binding.message.text = "Be the first dominator \n(╯▔皿▔)╯"
+        } else {
+            binding.message.visibility = View.INVISIBLE
+        }
     }
 }

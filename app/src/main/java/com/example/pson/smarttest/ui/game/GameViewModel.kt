@@ -76,7 +76,7 @@ class GameViewModel(private val scoreboardDao: ScoreboardDao) : ViewModel() {
     }
 
     fun increaseScore() {
-        _score.value = (_score.value)?.plus(SCORE_INCREASE)
+        _score.value = (_score.value)?.plus(scoreIncrease!!)
     }
 
     //tạo 4 lựa chọn cho mỗi câu hỏi đã được tạo, trong đó có 1 lựa chọn đúng
@@ -119,10 +119,13 @@ class GameViewModel(private val scoreboardDao: ScoreboardDao) : ViewModel() {
         Timer config section
      */
 
+    private var scoreIncrease: Int? = null
+
     //Bộ đếm thời gian (tổng 5s, giảm 1s)
-    inner class Timer : CountDownTimer(6000, 1000) {
+    inner class Timer : CountDownTimer(8000, 1000) {
         override fun onTick(p0: Long) {
             _remainTime.value = p0 / 1000
+            scoreIncrease = (p0/100).toInt()
         }
 
         override fun onFinish() {
@@ -140,6 +143,8 @@ class GameViewModel(private val scoreboardDao: ScoreboardDao) : ViewModel() {
     */
     //get section
     val topResults : LiveData<List<ScoreboardItem>> = scoreboardDao.getTopResults().asLiveData()
+
+    fun noResult() = (topResults.value == null) || (topResults.value!!.isEmpty())
 
     //insert section
     private suspend fun insertItem(scoreboardItem: ScoreboardItem) {

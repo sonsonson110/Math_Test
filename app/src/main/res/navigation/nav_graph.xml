@@ -26,7 +26,7 @@
     <fragment
         android:id="@+id/game_fragment"
         android:name="com.example.pson.smarttest.ui.game.GameFragment"
-        android:label="fragment_game"
+        android:label="Challenge"
         tools:layout="@layout/fragment_game">
         <action
             android:id="@+id/action_game_fragment_to_start_fragment"
@@ -39,6 +39,6 @@
     <fragment
         android:id="@+id/scoreboard_fragment"
         android:name="com.example.pson.smarttest.ui.game.ScoreboardFragment"
-        android:label="fragment_scoreboard"
+        android:label="Leaderboard"
         tools:layout="@layout/fragment_scoreboard" />
 </navigation>

@@ -16,7 +16,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.text.SimpleDateFormat
 import java.util.*
 
-open class GameFragment : Fragment() {
+class GameFragment : Fragment() {
 
     //viewModel
     private val viewModel: GameViewModel by activityViewModels {
