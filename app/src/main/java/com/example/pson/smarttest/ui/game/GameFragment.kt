@@ -89,7 +89,8 @@ open class GameFragment : Fragment() {
             //insert player result to database
             val playerScore = viewModel.score.value.toString()
             val playerTime = SimpleDateFormat("HH:mm, dd/MM/yyyy").format(Date())
-            viewModel.addNewScoreboardItem(playerName, playerScore, playerTime)
+            //decide to add new player or update higher score for old player
+            viewModel.updateHigherScore(playerName, playerScore, playerTime)
         } else {
             viewModel.getNextQuestion()
         }

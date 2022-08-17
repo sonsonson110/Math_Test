@@ -4,10 +4,14 @@ import android.os.CountDownTimer
 import androidx.lifecycle.*
 import com.example.pson.smarttest.database.ScoreboardDao
 import com.example.pson.smarttest.database.ScoreboardItem
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class GameViewModel(private val scoreboardDao: ScoreboardDao) : ViewModel() {
 
+    /**
+        Game Fragment layout variables & methods section
+     */
     //Điểm đã đạt được
     private val _score = MutableLiveData<Int>()
     val score: LiveData<Int> get() = _score
@@ -111,6 +115,10 @@ class GameViewModel(private val scoreboardDao: ScoreboardDao) : ViewModel() {
         timer.start()
     }
 
+    /**
+        Timer config section
+     */
+
     //Bộ đếm thời gian (tổng 5s, giảm 1s)
     inner class Timer : CountDownTimer(6000, 1000) {
         override fun onTick(p0: Long) {
@@ -127,18 +135,18 @@ class GameViewModel(private val scoreboardDao: ScoreboardDao) : ViewModel() {
     //đóng băng thời gian
     fun freezeTime() = timer.cancel()
 
-
-    //Database method section
-
+    /**
+        Database method section
+    */
+    //get section
     val topResults : LiveData<List<ScoreboardItem>> = scoreboardDao.getTopResults().asLiveData()
 
-    private fun insertItem(scoreboardItem: ScoreboardItem) {
-        viewModelScope.launch {
-            scoreboardDao.insert(scoreboardItem)
-        }
+    //insert section
+    private suspend fun insertItem(scoreboardItem: ScoreboardItem) {
+        scoreboardDao.insert(scoreboardItem)
     }
 
-    private fun getNewScoreboardItemEntry(
+    private fun getScoreboardItemEntry(
         playerName: String,
         playerScore: String,
         playerTime: String
@@ -150,13 +158,35 @@ class GameViewModel(private val scoreboardDao: ScoreboardDao) : ViewModel() {
         )
     }
 
-    fun addNewScoreboardItem(
+    private suspend fun addNewScoreboardItem(
         playerName: String,
         playerScore: String,
         playerTime: String
     ) {
-        val newItem = getNewScoreboardItemEntry(playerName, playerScore, playerTime)
+        val newItem = getScoreboardItemEntry(playerName, playerScore, playerTime)
         insertItem(newItem)
+    }
+
+    //update section
+    private suspend fun update(playerName: String, playerScore: String, playerTime: String) {
+        scoreboardDao.update(playerName, playerScore, playerTime)
+    }
+
+    fun updateHigherScore(playerName: String, playerScore: String, playerTime: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            if (isOldPlayer(playerName)) {
+                val oldPlayer = scoreboardDao.getPlayerResultWithName(playerName)!!
+                if (oldPlayer.score.toInt() < _score.value!!) {
+                    update(playerName, playerScore, playerTime)
+                }
+            } else {
+                addNewScoreboardItem(playerName, playerScore, playerTime)
+            }
+        }
+    }
+
+    private suspend fun isOldPlayer(playerName: String) : Boolean {
+        return scoreboardDao.getPlayerResultWithName(playerName) != null
     }
 }
 

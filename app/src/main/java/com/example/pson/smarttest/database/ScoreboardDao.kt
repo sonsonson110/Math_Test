@@ -1,9 +1,6 @@
 package com.example.pson.smarttest.database
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -13,4 +10,12 @@ interface ScoreboardDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(item: ScoreboardItem)
+
+    //get an item base on name
+    @Query("SELECT * FROM scoreboard WHERE name = :name")
+    suspend fun getPlayerResultWithName(name: String): ScoreboardItem?
+
+    //update an item base on name
+    @Query("UPDATE scoreboard SET score = :score, time = :time WHERE name = :name")
+    suspend fun update(name: String, score: String, time: String)
 }
