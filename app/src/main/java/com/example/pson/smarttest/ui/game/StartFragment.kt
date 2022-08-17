@@ -26,6 +26,8 @@ class StartFragment : Fragment() {
 
     private var filteredPlayerName: String? = null
 
+    private var recentPlayer: String = ""
+
     //setting ẩn thanh action bar riêng cho fragment
     @SuppressLint("RestrictedApi")
     override fun onResume() {
@@ -59,6 +61,13 @@ class StartFragment : Fragment() {
         }
         //set max length name in editText
         binding.playerNameText.filters += InputFilter.LengthFilter(9)
+
+        //get last player name if game restart
+        arguments?.let {
+            recentPlayer = it.getString("playerName").toString()
+        }
+        //set the text field to last playerName if game restart
+        binding.playerNameText.setText(recentPlayer)
     }
 
     //on click start button

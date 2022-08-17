@@ -30,7 +30,11 @@
         tools:layout="@layout/fragment_game">
         <action
             android:id="@+id/action_game_fragment_to_start_fragment"
-            app:destination="@id/start_fragment" />
+            app:destination="@id/start_fragment">
+            <argument
+                app:argType="string"
+                android:name="playerName"/>
+        </action>
     </fragment>
     <fragment
         android:id="@+id/scoreboard_fragment"

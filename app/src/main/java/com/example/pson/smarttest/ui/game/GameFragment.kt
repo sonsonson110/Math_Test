@@ -57,6 +57,10 @@ open class GameFragment : Fragment() {
             if (remainTime == 0L)
                 nextAction()
         }
+        //get argument from start fragment
+        arguments.let {
+            playerName = it?.getString("playerName").toString()
+        }
     }
 
     // function của Layout
@@ -85,9 +89,6 @@ open class GameFragment : Fragment() {
             //insert player result to database
             val playerScore = viewModel.score.value.toString()
             val playerTime = SimpleDateFormat("HH:mm, dd/MM/yyyy").format(Date())
-            arguments.let {
-                playerName = it?.getString("playerName").toString()
-            }
             viewModel.addNewScoreboardItem(playerName, playerScore, playerTime)
         } else {
             viewModel.getNextQuestion()
@@ -109,7 +110,7 @@ open class GameFragment : Fragment() {
     }
 
     private fun restartGame() {
-        val action = GameFragmentDirections.actionGameFragmentToStartFragment()
+        val action = GameFragmentDirections.actionGameFragmentToStartFragment(playerName = playerName)
         findNavController().navigate(action)
     }
 

@@ -70,7 +70,7 @@
             android:onClick="@{() -> StartFragment.startGame()}"/>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="200dp"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toTopOf="@+id/button"
             app:layout_constraintEnd_toEndOf="@+id/textView"
