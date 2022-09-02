@@ -77,6 +77,7 @@ class StartFragment : Fragment() {
             findNavController().navigate(action)
             viewModel.reinitializeGame()
         } else {
+            binding.playerNameText.requestFocus()
             binding.playerNameText.error = "Please don't leave me blank :("
         }
     }
