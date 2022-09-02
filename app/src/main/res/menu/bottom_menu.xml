@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/scoreboardFragment"
+        android:icon="@drawable/trophy"
+        android:title="Leaderboard" />
+    <item
+        android:id="@+id/startFragment"
+        android:icon="@drawable/device_gamepad"
+        android:title="Gameplay" />
+    <item
+        android:icon="@drawable/external_link"
+        android:title="Link" />
+</menu>

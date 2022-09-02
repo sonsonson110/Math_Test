@@ -144,8 +144,6 @@ class GameViewModel(private val scoreboardDao: ScoreboardDao) : ViewModel() {
     //get section
     val topResults : LiveData<List<ScoreboardItem>> = scoreboardDao.getTopResults().asLiveData()
 
-    fun noResult() = (topResults.value == null) || (topResults.value!!.isEmpty())
-
     //insert section
     private suspend fun insertItem(scoreboardItem: ScoreboardItem) {
         scoreboardDao.insert(scoreboardItem)

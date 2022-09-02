@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.RecyclerView
@@ -21,6 +22,12 @@ class ScoreboardFragment : Fragment() {
     }
 
     private lateinit var binding: FragmentScoreboardBinding
+
+    //setting ẩn thanh action bar riêng cho fragment
+    override fun onStart() {
+        super.onStart()
+        (activity as AppCompatActivity).supportActionBar?.hide()
+    }
 
     private lateinit var recyclerView: RecyclerView
 
@@ -46,12 +53,6 @@ class ScoreboardFragment : Fragment() {
             scoreboardItem.let {
                 adapter.submitList(it)
             }
-        }
-        //set first empty init scoreboard
-        if (viewModel.noResult()) {
-            binding.message.text = "Be the first dominator \n(╯▔皿▔)╯"
-        } else {
-            binding.message.visibility = View.INVISIBLE
         }
     }
 }

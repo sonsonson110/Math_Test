@@ -29,16 +29,9 @@ class StartFragment : Fragment() {
     private var recentPlayer: String = ""
 
     //setting ẩn thanh action bar riêng cho fragment
-    @SuppressLint("RestrictedApi")
-    override fun onResume() {
-        super.onResume()
-        (activity as AppCompatActivity).supportActionBar?.setShowHideAnimationEnabled(false)
+    override fun onStart() {
+        super.onStart()
         (activity as AppCompatActivity).supportActionBar?.hide()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        (activity as AppCompatActivity).supportActionBar?.show()
     }
 
     //đổi data binding layout first
@@ -84,8 +77,6 @@ class StartFragment : Fragment() {
 
     //on click pika pic
     fun openLeaderboard() {
-        val action = StartFragmentDirections.actionStartFragmentToScoreboardFragment()
-        findNavController().navigate(action)
     }
 
     //func that check if text field is empty or full of space digit

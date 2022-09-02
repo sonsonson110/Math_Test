@@ -10,7 +10,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.pson.smarttest.R
 import com.example.pson.smarttest.application.ScoreboardApplication
-import com.example.pson.smarttest.database.ScoreboardItem
 import com.example.pson.smarttest.databinding.FragmentGameBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.text.SimpleDateFormat
@@ -29,8 +28,6 @@ class GameFragment : Fragment() {
     private lateinit var binding: FragmentGameBinding
 
     private lateinit var playerName: String
-
-    lateinit var scoreboardItem: ScoreboardItem
 
     override fun onCreateView(
         inflater: LayoutInflater,
