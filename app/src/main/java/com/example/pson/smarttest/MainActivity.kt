@@ -31,13 +31,13 @@ class MainActivity : AppCompatActivity() {
             .findFragmentById(R.id.fragmentContainerView) as NavHostFragment
         navController = navHostFragment.navController
 
-        val appBarConfig = AppBarConfiguration(setOf(R.id.scoreboardFragment, R.id.startFragment))
+        val appBarConfig = AppBarConfiguration(setOf(R.id.scoreboardFragment, R.id.startFragment, R.id.linkFragment))
         setupActionBarWithNavController(navController, appBarConfig)
 
         bottomNavigationView.setupWithNavController(navController)
     }
 
-/*    //support back button for each fragment - backstack
+    /*//support back button for each fragment - backstack
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp() || super.onSupportNavigateUp()
     }*/

@@ -10,6 +10,7 @@
         android:icon="@drawable/device_gamepad"
         android:title="Gameplay" />
     <item
+        android:id="@+id/linkFragment"
         android:icon="@drawable/external_link"
         android:title="Link" />
 </menu>

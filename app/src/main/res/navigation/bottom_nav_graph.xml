@@ -40,5 +40,10 @@
         android:name="com.example.pson.smarttest.ui.game.ScoreboardFragment"
         android:label="ScoreboardFragment"
         tools:layout="@layout/fragment_scoreboard"/>
-    <fragment android:id="@+id/placeholder" />
+
+    <fragment
+        android:id="@+id/linkFragment"
+        android:name="com.example.pson.smarttest.ui.game.LinkFragment"
+        android:label="LinkFragment"
+        tools:layout="@layout/fragment_link"/>
 </navigation>
