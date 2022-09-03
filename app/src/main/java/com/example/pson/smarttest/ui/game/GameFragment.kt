@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.pson.smarttest.R
 import com.example.pson.smarttest.application.ScoreboardApplication
 import com.example.pson.smarttest.databinding.FragmentGameBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.text.SimpleDateFormat
 import java.util.*
@@ -28,6 +29,9 @@ class GameFragment : Fragment() {
     private lateinit var binding: FragmentGameBinding
 
     private lateinit var playerName: String
+
+    //this var prevent double click action
+    private var firstClick = true
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -78,19 +82,26 @@ class GameFragment : Fragment() {
 
     // tiếp / hiện thông báo kết thúc
     private fun nextAction() {
-        if (!viewModel.nextWord()) {
-            //show result dialog
-            showResultDialog()
-            viewModel.freezeTime()
+        //prevent double click event
+        if (firstClick) {
+            firstClick = false
 
-            //insert player result to database
-            val playerScore = viewModel.score.value.toString()
-            val playerTime = SimpleDateFormat("HH:mm, dd/MM/yyyy").format(Date())
-            //decide to add new player or update higher score for old player
-            viewModel.updateHigherScore(playerName, playerScore, playerTime)
-        } else {
-            viewModel.getNextQuestion()
+            if (!viewModel.nextWord()) {
+                //show result dialog
+                showResultDialog()
+                viewModel.freezeTime()
+
+                //insert player result to database
+                val playerScore = viewModel.score.value.toString()
+                val playerTime = SimpleDateFormat("HH:mm, dd/MM/yyyy").format(Date())
+                //decide to add new player or update higher score for old player
+                viewModel.updateHigherScore(playerName, playerScore, playerTime)
+            } else {
+                viewModel.getNextQuestion()
+            }
         }
+        //return first click value
+        firstClick = true
     }
 
     //thiết lập thông báo kết thúc
@@ -110,6 +121,10 @@ class GameFragment : Fragment() {
     private fun restartGame() {
         val action = GameFragmentDirections.actionGameFragmentToStartFragment(playerName = playerName)
         findNavController().navigate(action)
+
+        //hiện lại bottom nav bar
+        val bottomNavigationView = activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        bottomNavigationView?.visibility = View.VISIBLE
     }
 
     private fun exitGame() {

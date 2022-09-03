@@ -14,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.pson.smarttest.R
 import com.example.pson.smarttest.application.ScoreboardApplication
 import com.example.pson.smarttest.databinding.FragmentStartBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class StartFragment : Fragment() {
 
@@ -69,6 +70,9 @@ class StartFragment : Fragment() {
             val action = StartFragmentDirections.actionStartFragmentToGameFragment(playerName = filteredPlayerName)
             findNavController().navigate(action)
             viewModel.reinitializeGame()
+            //giấu bottom nav bar
+            val bottomNavigationView = activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+            bottomNavigationView?.visibility = View.GONE
         } else {
             binding.playerNameText.requestFocus()
             binding.playerNameText.error = "Please don't leave me blank :("
