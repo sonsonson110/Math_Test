@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -30,6 +31,8 @@ class GameFragment : Fragment() {
 
     private lateinit var playerName: String
 
+    private lateinit var bottomNavigationView: BottomNavigationView
+
     //this var prevent double click action
     private var firstClick = true
 
@@ -45,6 +48,11 @@ class GameFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        //định nghĩa thanh bottom nav
+        bottomNavigationView = activity?.findViewById(R.id.bottomNavigationView)!!
+
+        //hiện action bar
+        (activity as AppCompatActivity).supportActionBar?.show()
 
         //khởi tạo các element của xml
         binding.apply {
@@ -62,6 +70,11 @@ class GameFragment : Fragment() {
         arguments.let {
             playerName = it?.getString("playerName").toString()
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        bottomNavigationView.visibility = View.VISIBLE
     }
 
     // function của Layout
@@ -96,12 +109,13 @@ class GameFragment : Fragment() {
                 val playerTime = SimpleDateFormat("HH:mm, dd/MM/yyyy").format(Date())
                 //decide to add new player or update higher score for old player
                 viewModel.updateHigherScore(playerName, playerScore, playerTime)
+
             } else {
                 viewModel.getNextQuestion()
+                //return first click value only if vẫn còn câu hỏi
+                firstClick = true
             }
         }
-        //return first click value
-        firstClick = true
     }
 
     //thiết lập thông báo kết thúc
@@ -121,10 +135,6 @@ class GameFragment : Fragment() {
     private fun restartGame() {
         val action = GameFragmentDirections.actionGameFragmentToStartFragment(playerName = playerName)
         findNavController().navigate(action)
-
-        //hiện lại bottom nav bar
-        val bottomNavigationView = activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)
-        bottomNavigationView?.visibility = View.VISIBLE
     }
 
     private fun exitGame() {

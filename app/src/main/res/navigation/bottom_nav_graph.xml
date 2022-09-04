@@ -24,7 +24,7 @@
     <fragment
         android:id="@+id/gameFragment"
         android:name="com.example.pson.smarttest.ui.game.GameFragment"
-        android:label="GameFragment"
+        android:label=""
         tools:layout="@layout/fragment_game">
         <action
             android:id="@+id/action_gameFragment_to_startFragment"

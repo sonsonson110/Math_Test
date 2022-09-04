@@ -1,14 +1,13 @@
 package com.example.pson.smarttest.ui.game
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.InputFilter
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.pson.smarttest.R
@@ -77,10 +76,6 @@ class StartFragment : Fragment() {
             binding.playerNameText.requestFocus()
             binding.playerNameText.error = "Please don't leave me blank :("
         }
-    }
-
-    //on click pika pic
-    fun openLeaderboard() {
     }
 
     //func that check if text field is empty or full of space digit
