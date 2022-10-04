@@ -72,8 +72,8 @@ class GameFragment : Fragment() {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onStop() {
+        super.onStop()
         bottomNavigationView.visibility = View.VISIBLE
     }
 
